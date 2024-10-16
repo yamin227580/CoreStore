@@ -1,6 +1,7 @@
 "use server";
 import EmailConfirmationTemplate from "@/components/email-template";
 import ResetPasswordEmail from "@/components/password-reset-email-template";
+import MagicCodeEmail from "@/components/two-factor-email-template";
 import { getBaseUrl } from "@/lib/get-baseUrl";
 import { Resend } from "resend";
 
@@ -35,6 +36,21 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
     subject: "Reset Your Password - Alert from my project",
     react: ResetPasswordEmail({
       resetPasswordLink: resetLink,
+    }),
+  });
+
+  if (error) {
+    console.log(error);
+  }
+};
+
+export const sendTwoFactorEmail = async (email: string, code: string) => {
+  const { data, error } = await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: email,
+    subject: "Two Factor Authentication Code - my project",
+    react: MagicCodeEmail({
+      code,
     }),
   });
 

@@ -1,32 +1,86 @@
-import { auth } from "@/server/auth";
-import { Check, X } from "lucide-react";
+"use client";
+import { cn } from "@/lib/utils";
+import { twoFactorToogler } from "@/server/actions/settings";
+import { twoFactorSchema } from "@/types/settings-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 import { Button } from "../ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "../ui/form";
+import { Switch } from "../ui/switch";
 import SettingCard from "./setting-card";
 
-const TwoFactor = async () => {
-  const session = await auth();
+type TwoFactorProps = {
+  isTwoFactorEnabled: boolean;
+  email: string;
+};
+const TwoFactor = ({ isTwoFactorEnabled, email }: TwoFactorProps) => {
+  const form = useForm({
+    resolver: zodResolver(twoFactorSchema),
+    defaultValues: {
+      isTwoFactorEnabled,
+      email,
+    },
+  });
+  const { execute, status, result } = useAction(twoFactorToogler, {
+    onSuccess({ data }) {
+      if (data?.success) {
+        toast.success(data.success);
+      }
+      if (data?.error) {
+        toast.error(data.error);
+      }
+    },
+  });
+  const onSubmit = (values: z.infer<typeof twoFactorSchema>) => {
+    const { isTwoFactorEnabled, email } = values;
+    execute({ isTwoFactorEnabled, email });
+  };
   return (
     <SettingCard>
-      <div className="flex items-center justify-between">
-        <p className="text-sm font-medium">Two Factor Authentication</p>
-        {session?.user.isTwofactorEnabled ? (
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            name="isTwoFactorEnabled"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Two Factor Authentication</FormLabel>
+                <FormDescription>
+                  {isTwoFactorEnabled ? "Disable" : "Enable"} two factor
+                  authentication for your account
+                </FormDescription>
+                <FormControl>
+                  <Switch
+                    disabled={status === "executing"}
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
           <Button
-            className="bg-primary text-white hover:bg-primary/70"
-            size={"sm"}
+            className={cn(
+              "w-full mb-4 mt-2",
+              status === "executing" && "animate-pulse",
+              isTwoFactorEnabled ? "bg-red-400 hover:bg-red-600" : "bg-primary"
+            )}
+            disabled={status === "executing"}
           >
-            <Check className="w-4 h-4 me-1" />
-            On
+            {isTwoFactorEnabled ? "Disable" : "Enable"}
           </Button>
-        ) : (
-          <Button
-            className="bg-red-600 text-white hover:bg-red-400"
-            size={"sm"}
-          >
-            <X className="w-4 h-4 me-1" />
-            Off
-          </Button>
-        )}
-      </div>
+        </form>
+      </Form>
     </SettingCard>
   );
 };
