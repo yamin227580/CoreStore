@@ -1,0 +1,21 @@
+"use server";
+import { settingsSchema } from "@/types/settings-schema";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+import { db } from "..";
+import { users } from "../schema";
+import { actionClient } from "./safe-action";
+
+export const updateDisplayName = actionClient
+  .schema(settingsSchema)
+  .action(async ({ parsedInput: { name, email } }) => {
+    const existingUser = await db.query.users.findFirst({
+      where: eq(users.email, email),
+    });
+    if (!existingUser) {
+      return { error: "User not found" };
+    }
+    await db.update(users).set({ name }).where(eq(users.email, email));
+    revalidatePath("/dashboard/settings");
+    return { success: "Display name updated" };
+  });
