@@ -23,8 +23,8 @@ import useMediaQuery from "@/hooks/useMediaQuery";
 import { UserRoundPen } from "lucide-react";
 import { Session } from "next-auth";
 import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
+import AvatarUploadForm from "./avatar-upload-form";
 import ProfileForm from "./profile-form";
 import SettingCard from "./setting-card";
 
@@ -38,13 +38,12 @@ const ProfileCard = ({ session }: ProfileCardProps) => {
   return (
     <SettingCard>
       <div className="flex items-start  justify-between">
-        <div className="flex items-center gap-2">
-          <Avatar className="w-14 h-14">
-            <AvatarImage src={session?.user?.image!} />
-            <AvatarFallback className="bg-primary text-white font-bold">
-              {session?.user?.name?.slice(0, 2).toLocaleUpperCase()}
-            </AvatarFallback>
-          </Avatar>
+        <div className="flex items-start gap-2">
+          <AvatarUploadForm
+            image={session.user.image}
+            name={session.user.name!}
+            email={session.user.email!}
+          />
           <div>
             <h2 className="font-semibold text-lg">{session.user?.name}</h2>
             <p className="font-medium text-sm text-muted-foreground">
