@@ -1,4 +1,5 @@
 import ChangePassword from "@/components/settings/change-password";
+import LogOutBtn from "@/components/settings/log-out";
 import ProfileCard from "@/components/settings/profile-card";
 import SettingCard from "@/components/settings/setting-card";
 import TwoFactor from "@/components/settings/two-factor";
@@ -11,19 +12,18 @@ const Settings = async () => {
 
   return (
     <SettingCard title="Settings" description="Manage your account settings">
-      <main className="flex flex-1 flex-col lg:flex-row gap-4 pt-6">
-        <div className="flex-1">
-          <ProfileCard session={session} />
-        </div>
+      <main className="flex flex-col gap-4">
+        <ProfileCard session={session} />
         {!session.user.isOauth && (
-          <div className="flex-1 space-y-4">
+          <>
             <ChangePassword email={session.user.email!} />
             <TwoFactor
               isTwoFactorEnabled={session.user.isTwofactorEnabled}
               email={session.user.email!}
             />
-          </div>
+          </>
         )}
+        <LogOutBtn />
       </main>
     </SettingCard>
   );

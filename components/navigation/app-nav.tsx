@@ -4,7 +4,6 @@ import UserButton from "./user-button";
 
 const AppNav = async () => {
   const session = await auth();
-  console.log(session);
   return (
     <div className="flex items-center justify-between py-4">
       <NavLogo />
