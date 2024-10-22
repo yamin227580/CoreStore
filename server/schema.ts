@@ -5,6 +5,8 @@ import {
   pgEnum,
   pgTable,
   primaryKey,
+  real,
+  serial,
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
@@ -96,3 +98,11 @@ export const resetPasswordToken = pgTable(
     compoundKey: primaryKey({ columns: [vt.id, vt.token] }),
   })
 );
+
+const products = pgTable("products", {
+  id: serial("id").primaryKey(),
+  description: text("description").notNull(),
+  title: text("title").notNull(),
+  price: real("price").notNull(), // can use integer
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(), // mode is optional
+});

@@ -38,7 +38,7 @@ const ProfileCard = ({ session }: ProfileCardProps) => {
   return (
     <SettingCard>
       <div className="flex items-start  justify-between">
-        <div className="flex items-start gap-2">
+        <div className="flex items-start gap-2 flex-col lg:flex-row">
           <AvatarUploadForm
             image={session.user.image}
             name={session.user.name!}
