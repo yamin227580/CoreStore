@@ -17,7 +17,6 @@ export const login = actionClient
   .schema(loginSchema)
   .action(async ({ parsedInput: { email, password, code } }) => {
     try {
-      console.log("code here", code);
       const existingUser = await db.query.users.findFirst({
         where: eq(users.email, email),
       });

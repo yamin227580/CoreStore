@@ -50,6 +50,13 @@
       "when": 1729073198730,
       "tag": "0006_past_firedrake",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1729664620502,
+      "tag": "0007_minor_lucky_pierre",
+      "breakpoints": true
     }
   ]
 }

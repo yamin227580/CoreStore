@@ -99,7 +99,7 @@ export const resetPasswordToken = pgTable(
   })
 );
 
-const products = pgTable("products", {
+export const products = pgTable("products", {
   id: serial("id").primaryKey(),
   description: text("description").notNull(),
   title: text("title").notNull(),
