@@ -17,13 +17,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { updateProduct } from "@/server/actions/products";
+import { getSingleProduct, updateProduct } from "@/server/actions/products";
 import { ProductSchema } from "@/types/product-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DollarSign } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -31,6 +31,26 @@ import Tiptap from "./tip-tap";
 
 const CreateProudctForm = () => {
   const router = useRouter();
+  const isEditMode = useSearchParams().get("edit_id");
+  const [editProduct, setEditProduct] = useState<string>("");
+
+  const isProductExit = async (id: number) => {
+    if (isEditMode) {
+      const response = await getSingleProduct(id);
+      if (response.error) {
+        toast.error(response.error);
+        router.push("/dashboard/products");
+        return;
+      }
+      if (response.success) {
+        setEditProduct(response.success.title);
+        form.setValue("title", response.success.title);
+        form.setValue("description", response.success.description);
+        form.setValue("price", response.success.price);
+      }
+    }
+  };
+
   const form = useForm({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
@@ -55,19 +75,34 @@ const CreateProudctForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof ProductSchema>) => {
-    const { id, title, description, price } = values;
-    execute({ id, title, description, price });
+    const { title, description, price } = values;
+    execute({
+      id: isEditMode ? Number(isEditMode) : undefined,
+      title,
+      description,
+      price,
+    });
   };
 
   useEffect(() => {
     form.setValue("description", "");
   }, [form]);
 
+  useEffect(() => {
+    if (isEditMode) {
+      isProductExit(Number(isEditMode));
+    }
+  }, []);
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create Product</CardTitle>
-        <CardDescription>Create a new product</CardDescription>
+        <CardTitle>{isEditMode ? "Edit Product" : "Create Product"} </CardTitle>
+        <CardDescription>
+          {isEditMode
+            ? `Edit your product : ${form.getValues("title")}`
+            : "Create a new product"}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -130,7 +165,7 @@ const CreateProudctForm = () => {
               )}
               disabled={status === "executing"}
             >
-              Submit
+              {isEditMode ? "Update Product" : "Create Product"}
             </Button>
           </form>
         </Form>
