@@ -1,3 +1,4 @@
+//This code can be used for every project
 import * as schema from "@/server/schema";
 import type {
   BuildQueryResult,
@@ -25,7 +26,7 @@ export type InferResultType<
     with: With;
   }
 >;
-
+//This code can be used for every project
 export type VariantsWithImagesTags = InferResultType<
   "productVariants",
   { variantImages: true; variantTags: true }
