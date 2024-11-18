@@ -3,7 +3,7 @@ import { Dispatch, forwardRef, SetStateAction, useState } from "react";
 import { Input } from "../ui/input";
 
 type TagsInputProps = {
-  value: string[];
+  value: string[]; //the current value of the field(here tags field) value:tag field.value
   handleOnChange: Dispatch<SetStateAction<string[]>>;
 };
 

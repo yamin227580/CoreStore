@@ -24,6 +24,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import TagsInput from "./tags-input";
+import VariantImages from "./variant-image";
 
 type VariantDialogProps = {
   children: React.ReactNode;
@@ -40,13 +41,13 @@ const VariantDialog = ({
   const form = useForm<z.infer<typeof VariantSchema>>({
     resolver: zodResolver(VariantSchema),
     defaultValues: {
-      tags: [],
-      variantImages: [],
       id: undefined,
       productId,
       editMode,
       productType: "black",
       color: "#000",
+      tags: [],
+      variantImages: [],
     },
   });
   const onSubmit = (values: z.infer<typeof VariantSchema>) => {
@@ -55,7 +56,7 @@ const VariantDialog = ({
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="h-[40rem] overflow-scroll">
         <DialogHeader>
           <DialogTitle>
             {editMode ? "update an existing" : "create new"} product's variant
@@ -109,6 +110,7 @@ const VariantDialog = ({
                 </FormItem>
               )}
             />
+            <VariantImages />
             <Button type="submit" className="w-full">
               {editMode
                 ? "Update product's variant"
