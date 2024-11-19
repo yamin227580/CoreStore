@@ -81,7 +81,17 @@ export const columns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const image = row.getValue("image") as string;
       const title = row.getValue("title") as string;
-      return <Image src={image} alt={title} width={50} height={50} />;
+      return (
+        <div className="w-12 h-12 overflow-hidden">
+          <Image
+            src={image}
+            alt={title}
+            width={50}
+            height={50}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      );
     },
   },
   {
@@ -90,13 +100,21 @@ export const columns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const variants = row.getValue("variants") as VariantsWithImagesTags[];
       return (
-        <div>
-          {variants.map((variant) => (
-            <div key={variant.id}>
-              <p>{variant.color}</p>
-            </div>
+        <div className="flex gap-1">
+          {variants.map((variant, index) => (
+            <VariantDialog
+              editMode={true}
+              productId={row.original.id}
+              variant={variant}
+              key={index}
+            >
+              <div
+                className="w-5 h-5 rounded-full"
+                style={{ backgroundColor: variant.color }}
+              />
+            </VariantDialog>
           ))}
-          <VariantDialog editMode={false}>
+          <VariantDialog editMode={false} productId={row.original.id}>
             <CirclePlus className="w-5 h-5 hover:text-gray-500 duration-200 cursor-pointer" />
           </VariantDialog>
         </div>

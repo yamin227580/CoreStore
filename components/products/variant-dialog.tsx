@@ -10,10 +10,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { VariantsWithImagesTags } from "@/lib/infer-types";
+import { createVariant, deleteVariant } from "@/server/actions/variants";
 import { VariantSchema } from "@/types/variant-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import { useAction } from "next-safe-action/hooks";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 import {
   Dialog,
@@ -38,6 +41,7 @@ const VariantDialog = ({
   productId,
   variant,
 }: VariantDialogProps) => {
+  const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof VariantSchema>>({
     resolver: zodResolver(VariantSchema),
     defaultValues: {
@@ -45,16 +49,89 @@ const VariantDialog = ({
       productId,
       editMode,
       productType: "black",
-      color: "#000",
-      tags: [],
+      color: "#000000",
+      tags: [
+        "iphone",
+        "ipad",
+        "MacBook",
+        "Apple Watch",
+        "Accessories",
+        "Cover",
+      ],
       variantImages: [],
     },
   });
+
+  const { execute, status, result } = useAction(createVariant, {
+    onSuccess({ data }) {
+      setOpen(false);
+      if (data?.success) {
+        toast.success(data.success);
+      }
+      if (data?.error) {
+        toast.error(data.error);
+      }
+    },
+  });
+
+  const variantDelete = useAction(deleteVariant, {
+    onSuccess({ data }) {
+      setOpen(false);
+      if (data?.success) {
+        toast.success(data.success);
+      }
+      if (data?.error) {
+        toast.error(data.error);
+      }
+    },
+  });
+
+  const getData = () => {
+    if (!editMode) {
+      form.reset();
+      return;
+    }
+    if (editMode && variant) {
+      form.setValue("editMode", true);
+      form.setValue("id", variant.id);
+      form.setValue("color", variant.color);
+      form.setValue("productId", variant.productId);
+      form.setValue("productType", variant.productType);
+      form.setValue(
+        "tags",
+        variant.variantTags.map((t) => t.tag)
+      );
+      form.setValue(
+        "variantImages",
+        variant.variantImages.map((img) => {
+          return {
+            url: img.image_url,
+            size: Number(img.size),
+            name: img.name,
+          };
+        })
+      );
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, [variant]);
+
   const onSubmit = (values: z.infer<typeof VariantSchema>) => {
-    console.log("hello");
+    const { id, productId, color, productType, tags, variantImages } = values;
+    form.reset();
+    execute({
+      id,
+      productId,
+      color,
+      editMode,
+      productType,
+      tags,
+      variantImages,
+    });
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="h-[40rem] overflow-scroll">
         <DialogHeader>
@@ -111,11 +188,31 @@ const VariantDialog = ({
               )}
             />
             <VariantImages />
-            <Button type="submit" className="w-full">
-              {editMode
-                ? "Update product's variant"
-                : "Create product's variant"}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={status === "executing" || !form.formState.isValid}
+              >
+                {editMode
+                  ? "Update product's variant"
+                  : "Create product's variant"}
+              </Button>
+              {editMode && (
+                <Button
+                  type="button"
+                  variant={"destructive"}
+                  className="w-full"
+                  disabled={status === "executing" || !form.formState.isValid}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    variantDelete.execute({ id: Number(variant?.id) });
+                  }}
+                >
+                  Delete product's variant
+                </Button>
+              )}
+            </div>
           </form>
         </Form>
       </DialogContent>

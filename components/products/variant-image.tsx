@@ -29,7 +29,7 @@ const VariantImages = () => {
         name="tags"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Variant tags</FormLabel>
+            <FormLabel>Variant images</FormLabel>
             <FormDescription>
               You can upload multiple 10 images at once.
             </FormDescription>
