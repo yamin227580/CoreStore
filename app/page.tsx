@@ -12,7 +12,7 @@ export default async function Home() {
   });
 
   return (
-    <main>
+    <main className="bg-[#f6f5f8]">
       <h2>Nav</h2>
       <Products productWithVariants={productVariants} />
     </main>
