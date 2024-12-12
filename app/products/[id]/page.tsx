@@ -1,3 +1,4 @@
+import AddToCart from "@/components/cart/add-to-cart";
 import ImageSlider from "@/components/products/image-slider";
 import VariantPicker from "@/components/products/variant-picker";
 import formatCurrency from "@/lib/formatCurrency";
@@ -11,6 +12,7 @@ type SingleProductProps = {
   };
 };
 
+//for performance
 export async function generateStaticParams() {
   const data = await db.query.productVariants.findMany({
     with: {
@@ -56,11 +58,11 @@ const SingleProduct = async ({ params }: SingleProductProps) => {
   return (
     <>
       {currentProductVarientWithImgTag && (
-        <main className="flex gap-4 mt-6">
-          <div className="flex-1">
+        <main className="flex gap-4 mt-6 flex-col lg:flex-row pb-6">
+          <div className="lg:flex-1">
             <ImageSlider variants={currentVarWithImg} />
           </div>
-          <div className="flex-1">
+          <div className="lg:flex-1">
             <h2 className="font-bold text-2xl">
               {currentProductVarientWithImgTag.product.title}
             </h2>
@@ -92,6 +94,7 @@ const SingleProduct = async ({ params }: SingleProductProps) => {
                 )
               )}
             </div>
+            <AddToCart />
           </div>
         </main>
       )}

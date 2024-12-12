@@ -48,7 +48,7 @@ const ImageSlider = ({ variants }: ImageSliderProps) => {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <div className="flex gap-4 py-4 items-center">
+      <div className="flex gap-4 py-2 items-center">
         {variants?.variantImages.map((img, index) => (
           <div key={img.image_url}>
             {img.image_url ? (
