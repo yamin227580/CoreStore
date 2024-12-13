@@ -36,7 +36,7 @@ const VariantPicker = ({
           <div
             onClick={() =>
               router.push(
-                `/products/${id}?productId=${productId}&type=${productType}&image=${image}&title=${title}&price=${price}`
+                `/products/${id}?vid=${id}&productId=${productId}&type=${productType}&image=${image}&title=${title}&price=${price}`
               )
             }
             style={{ backgroundColor: color }}

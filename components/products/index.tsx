@@ -14,7 +14,7 @@ const Products = ({ productWithVariants }: ProductProps) => {
           <Link
             key={p.id}
             className="bg-white p-2 rounded-md"
-            href={`products/${p.id}?productId=${p.product.id}&type=${p.productType}&image=${p.variantImages[0].image_url}&title=${p.product.title}&price=${p.product.price}`}
+            href={`products/${p.id}?vid=${p.id}&productId=${p.productId}&type=${p.productType}&image=${p.variantImages[0].image_url}&title=${p.product.title}&price=${p.product.price}`}
           >
             <Image
               src={p.variantImages[0].image_url}
