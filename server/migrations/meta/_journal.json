@@ -71,6 +71,13 @@
       "when": 1730394356478,
       "tag": "0009_heavy_thunderbolts",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1734158102137,
+      "tag": "0010_shallow_nightcrawler",
+      "breakpoints": true
     }
   ]
 }
