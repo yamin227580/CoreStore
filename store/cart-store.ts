@@ -14,6 +14,7 @@ export type CartItem = {
 export type CartType = {
   cart: CartItem[];
   addToCart: (item: CartItem) => void;
+  removeFromCart: (item: CartItem) => void;
 };
 export const useCartStore = create<CartType>((set) => ({
   cart: [],
@@ -50,5 +51,21 @@ export const useCartStore = create<CartType>((set) => ({
           ],
         };
       }
+    }),
+  removeFromCart: (item) =>
+    set((state) => {
+      const updatedCart = state.cart.map((cItem) => {
+        if (cItem.variant.variantId === item.variant.variantId) {
+          return {
+            ...cItem,
+            variant: {
+              ...cItem.variant,
+              quantity: cItem.variant.quantity - 1,
+            },
+          };
+        }
+        return cItem;
+      });
+      return { cart: updatedCart.filter((item) => item.variant.quantity > 0) };
     }),
 }));
