@@ -16,7 +16,10 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 
 const CartItem = () => {
-  const { cart, addToCart, removeFromCart } = useCartStore((state) => state);
+  const cart = useCartStore((state) => state.cart);
+  const addToCart = useCartStore((state) => state.addToCart);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const setCartPosition = useCartStore((state) => state.setCartPosition);
   return (
     <div className="lg:w-1/2 mx-auto mb-4">
       {cart.length === 0 ? (
@@ -96,7 +99,11 @@ const CartItem = () => {
               </TableRow>
             </TableFooter>
           </Table>
-          <Button size={"lg"} className="w-full mt-3 mb-6">
+          <Button
+            size={"lg"}
+            className="w-full mt-3 mb-6"
+            onClick={() => setCartPosition("Checkout")}
+          >
             Place Order
           </Button>
         </div>
