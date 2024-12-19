@@ -33,7 +33,7 @@ const Products = ({ productWithVariants }: ProductProps) => {
               {p.product.title.substring(0, 26) + "..."}
             </h3>
             <p className="font-medium text-sm mt-1">
-              {formatCurrency(p.product.price)}
+              {formatCurrency(p.product.price)} USD
             </p>
           </Link>
         );

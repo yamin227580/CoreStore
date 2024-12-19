@@ -30,7 +30,7 @@ const CartStatus = () => {
           cartPosition === "Success" && "text-primary",
           "cursor-pointer"
         )}
-        onClick={() => setCartPosition("Checkout")}
+        //onClick={() => setCartPosition("Checkout")}
       />
       <Minus
         className={cn(
@@ -43,7 +43,7 @@ const CartStatus = () => {
           cartPosition === "Success" ? "text-primary" : "text-gray-400",
           "cursor-pointer"
         )}
-        onClick={() => setCartPosition("Success")}
+        //onClick={() => setCartPosition("Success")}
       />
     </div>
   );

@@ -146,10 +146,10 @@ const CreateProudctForm = () => {
                         className="p-2 bg-muted rounded-md"
                       />
                       <Input
-                        placeholder="Price must be shown in MMK"
+                        placeholder="Price must be shown in USD"
                         {...field}
                         type="number"
-                        step={100}
+                        // step={10}
                         min={0}
                       />
                     </div>

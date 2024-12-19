@@ -85,7 +85,7 @@ const CartItem = () => {
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    {formatCurrency(Number(cItem.price))}
+                    {formatCurrency(Number(cItem.price))} USD
                   </TableCell>
                 </TableRow>
               ))}
@@ -94,7 +94,7 @@ const CartItem = () => {
               <TableRow>
                 <TableCell colSpan={3}>Total</TableCell>
                 <TableCell className="text-right">
-                  {formatCurrency(totalPriceCalc(cart))}
+                  {formatCurrency(totalPriceCalc(cart))} USD
                 </TableCell>
               </TableRow>
             </TableFooter>

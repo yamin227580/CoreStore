@@ -77,7 +77,8 @@ const SingleProduct = async ({ params }: SingleProductProps) => {
               }}
             />
             <p className="font-bold text-2xl my-4">
-              {formatCurrency(currentProductVarientWithImgTag.product.price)} ks
+              {formatCurrency(currentProductVarientWithImgTag.product.price)}{" "}
+              USD
             </p>
 
             <div className="flex gap-2 items-center">
