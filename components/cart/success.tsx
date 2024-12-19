@@ -1,3 +1,4 @@
+"use client";
 import { useCartStore } from "@/store/cart-store";
 import { PartyPopper } from "lucide-react";
 import { useEffect } from "react";

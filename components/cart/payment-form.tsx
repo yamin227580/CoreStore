@@ -1,4 +1,5 @@
 "use client";
+import { createOrder } from "@/server/actions/order";
 import { processPayment } from "@/server/actions/payment";
 import { useCartStore } from "@/store/cart-store";
 import {
@@ -6,7 +7,9 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
+import { useAction } from "next-safe-action/hooks";
 import React, { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "../ui/button";
 
 type PayemntFormProps = {
@@ -20,6 +23,18 @@ const PaymentForm = ({ totalPrice }: PayemntFormProps) => {
   const [errorMsg, setErrorMsg] = useState("");
   const stripe = useStripe();
   const elements = useElements();
+
+  const { execute } = useAction(createOrder, {
+    onSuccess: ({ data }) => {
+      if (data?.error) {
+        toast.error(data.error);
+      }
+      if (data?.success) {
+        setCartPosition("Success");
+        clearCart();
+      }
+    },
+  });
   const onSubmitHandler = async (e: React.FormEvent) => {
     setLoading(true);
     e.preventDefault();
@@ -69,6 +84,16 @@ const PaymentForm = ({ totalPrice }: PayemntFormProps) => {
         setLoading(false);
         setCartPosition("Success");
         clearCart();
+        execute({
+          paymentId: response.data.success.paymentIntentId,
+          totalPrice,
+          status: "pending",
+          products: cart.map((item) => ({
+            productId: item.id,
+            quantity: item.variant.quantity,
+            variantId: item.variant.variantId,
+          })),
+        });
       }
     }
   };
