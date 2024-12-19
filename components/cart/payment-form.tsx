@@ -30,6 +30,7 @@ const PaymentForm = ({ totalPrice }: PayemntFormProps) => {
         toast.error(data.error);
       }
       if (data?.success) {
+        toast.success(data.success);
         setCartPosition("Success");
         clearCart();
       }

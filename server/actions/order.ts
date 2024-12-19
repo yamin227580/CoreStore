@@ -1,5 +1,6 @@
 "use server";
 import { createOrderSchema } from "@/types/order-schema";
+import { revalidatePath } from "next/cache";
 import { db } from "..";
 import { auth } from "../auth";
 import { orderProduct, orders } from "../schema";
@@ -27,6 +28,7 @@ export const createOrder = actionClient
           orderID: order[0].id,
         });
       });
+      revalidatePath("/dashboard/orders");
       return { success: "order added" };
     }
   );

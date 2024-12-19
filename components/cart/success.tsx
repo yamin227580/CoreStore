@@ -1,6 +1,7 @@
 "use client";
 import { useCartStore } from "@/store/cart-store";
 import { PartyPopper } from "lucide-react";
+import Link from "next/link";
 import { useEffect } from "react";
 import { Button } from "../ui/button";
 
@@ -20,7 +21,9 @@ const Success = () => {
       <p className="text-sm font-medium text-muted-foreground mb-4">
         Thank you for your purchase
       </p>
-      <Button className="mx-auto">View your order</Button>
+      <Button className="mx-auto">
+        <Link href={"/dashboard/orders"}>View your order</Link>
+      </Button>
     </main>
   );
 };
