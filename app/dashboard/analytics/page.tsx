@@ -1,14 +1,16 @@
 import AnalyticsCard from "@/components/analytics/analytics-card";
-import { analytics } from "@/server/actions/analytics";
+import AnalyticsChart from "@/components/analytics/analytics-chart";
+import { analytics, WeelkyAnalytics } from "@/server/actions/analytics";
 import { Box, Clock, Package, User } from "lucide-react";
 
 const Analytics = async () => {
   const analyticsData = await analytics();
+  const weeklyAnalyticsData = await WeelkyAnalytics();
 
   return (
-    <main className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <main>
       {analyticsData && (
-        <>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <AnalyticsCard
             title="Pending Orders"
             count={analyticsData.pendingOrders}
@@ -33,8 +35,9 @@ const Analytics = async () => {
             icon={<Box size={26} />}
             href="/dashboard/products"
           />
-        </>
+        </div>
       )}
+      <AnalyticsChart data={weeklyAnalyticsData!} />
     </main>
   );
 };

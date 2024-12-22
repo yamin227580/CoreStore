@@ -11,7 +11,7 @@ const Success = () => {
   useEffect(() => {
     setTimeout(() => {
       setCartPosition("Order");
-    }, 5000);
+    }, 3000);
     // if (cart.length === 0) setCartPosition("Order");
   }, []);
   return (
