@@ -51,8 +51,8 @@ const VariantDialog = ({
       productType: "black",
       color: "#000000",
       tags: [
-        "iphone",
-        "ipad",
+        "iPhone",
+        "iPad",
         "MacBook",
         "Apple Watch",
         "Accessories",

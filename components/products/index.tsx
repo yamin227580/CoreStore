@@ -1,15 +1,29 @@
+"use client";
 import formatCurrency from "@/lib/formatCurrency";
 import { VariantsWithProduct } from "@/lib/infer-types";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type ProductProps = {
   productWithVariants: VariantsWithProduct[];
 };
 const Products = ({ productWithVariants }: ProductProps) => {
+  const params = useSearchParams();
+  const tagParams = params.get("tag") || "iphone";
+  const [filterProducts, setFilterProducts] = useState<VariantsWithProduct[]>(
+    []
+  );
+  useEffect(() => {
+    const filterItems = productWithVariants.filter(
+      (item) => item.variantTags[0].tag.toLowerCase() === tagParams
+    );
+    setFilterProducts(filterItems);
+  }, [tagParams]);
   return (
     <main className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {productWithVariants.map((p) => {
+      {filterProducts.map((p) => {
         return (
           <Link
             key={p.id}

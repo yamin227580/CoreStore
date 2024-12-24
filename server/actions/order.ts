@@ -1,5 +1,6 @@
 "use server";
-import { createOrderSchema } from "@/types/order-schema";
+import { createOrderSchema, updateOrderSchema } from "@/types/order-schema";
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "..";
 import { auth } from "../auth";
@@ -32,3 +33,15 @@ export const createOrder = actionClient
       return { success: "order added" };
     }
   );
+
+export const updateOrderStatus = actionClient
+  .schema(updateOrderSchema)
+  .action(async ({ parsedInput: { status, id } }) => {
+    const order = await db.query.orders.findFirst({ where: eq(orders.id, id) });
+    if (!order) {
+      return { error: "Order not found" };
+    }
+    await db.update(orders).set({ status }).where(eq(orders.id, id));
+    revalidatePath("/dashboard/orders");
+    return { success: "Order status updated." };
+  });
