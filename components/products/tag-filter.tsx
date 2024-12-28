@@ -49,6 +49,7 @@ const TagFilter = () => {
     <div className="flex items-center justify-center gap-2 text-sm font-medium mb-4 flex-wrap">
       {tags.map((t) => (
         <p
+          key={t.id}
           className={cn(
             "cursor-pointer rounded-md border-2 border-black px-2 py-1",
             t.tag === tagParams && "bg-black text-white"
