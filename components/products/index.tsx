@@ -21,6 +21,8 @@ const Products = ({ productWithVariants }: ProductProps) => {
     );
     setFilterProducts(filterItems);
   }, [tagParams]);
+
+  console.log("data", filterProducts);
   return (
     <main className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {filterProducts.map((p) => {
