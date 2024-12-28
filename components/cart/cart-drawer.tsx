@@ -26,7 +26,7 @@ const CartDrawer = ({ children, user }: CartDrawerProps) => {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger>{children}</DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="fixed top-0 left-0 w-full max-h-[75%] bg-white shadow-lg border-b transition-transform duration-300">
         <DrawerHeader>
           <DrawerTitle className="text-center">Your Cart</DrawerTitle>
           <DrawerDescription className="text-center mb-10">

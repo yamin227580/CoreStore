@@ -46,7 +46,7 @@ const TagFilter = () => {
     }
   };
   return (
-    <div className="flex items-center justify-center gap-2 text-sm font-medium mb-4">
+    <div className="flex items-center justify-center gap-2 text-sm font-medium mb-4 flex-wrap">
       {tags.map((t) => (
         <p
           className={cn(
