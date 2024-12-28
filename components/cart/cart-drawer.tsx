@@ -1,3 +1,4 @@
+"use client";
 import {
   Drawer,
   DrawerContent,
@@ -7,7 +8,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useCartStore } from "@/store/cart-store";
-import React from "react";
+import React, { useState } from "react";
 import CartItem from "./cart-item";
 import CartStatus from "./cart-status";
 import Payment from "./payment";
@@ -15,12 +16,15 @@ import Success from "./success";
 
 type CartDrawerProps = {
   children: React.ReactNode;
+  user: string;
 };
 
-const CartDrawer = ({ children }: CartDrawerProps) => {
+const CartDrawer = ({ children, user }: CartDrawerProps) => {
   const cartPosition = useCartStore((state) => state.cartPosition);
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Drawer>
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger>{children}</DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
@@ -30,7 +34,9 @@ const CartDrawer = ({ children }: CartDrawerProps) => {
           </DrawerDescription>
           <CartStatus />
         </DrawerHeader>
-        {cartPosition === "Order" && <CartItem />}
+        {cartPosition === "Order" && (
+          <CartItem user={user} setIsOpen={setIsOpen} />
+        )}
         {cartPosition === "Checkout" && <Payment />}
         {cartPosition === "Success" && <Success />}
       </DrawerContent>

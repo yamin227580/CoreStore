@@ -13,13 +13,31 @@ import { totalPriceCalc } from "@/lib/total-price";
 import EmptyCartImg from "@/public/empty-cart.png";
 import { useCartStore } from "@/store/cart-store";
 import Image from "next/image";
+import { toast } from "sonner";
 import { Button } from "../ui/button";
 
-const CartItem = () => {
+type CartItemProps = {
+  user: string;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const CartItem = ({ user, setIsOpen }: CartItemProps) => {
   const cart = useCartStore((state) => state.cart);
   const addToCart = useCartStore((state) => state.addToCart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const setCartPosition = useCartStore((state) => state.setCartPosition);
+
+  const handlePlaceOrder = () => {
+    if (user) {
+      setCartPosition("Checkout");
+    } else {
+      toast.error("You can't place order! You need to sign in first");
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 3000);
+    }
+  };
+
   return (
     <div className="lg:w-1/2 mx-auto mb-4">
       {cart.length === 0 ? (
@@ -102,7 +120,7 @@ const CartItem = () => {
           <Button
             size={"lg"}
             className="w-full mt-3 mb-6"
-            onClick={() => setCartPosition("Checkout")}
+            onClick={handlePlaceOrder}
           >
             Place Order
           </Button>

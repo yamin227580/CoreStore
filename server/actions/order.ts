@@ -43,5 +43,6 @@ export const updateOrderStatus = actionClient
     }
     await db.update(orders).set({ status }).where(eq(orders.id, id));
     revalidatePath("/dashboard/orders");
+    revalidatePath("/dashboard/analytics");
     return { success: "Order status updated." };
   });

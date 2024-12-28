@@ -10,7 +10,7 @@ const AppNav = async () => {
     <div className="flex items-center justify-between py-4">
       <NavLogo />
       <div className="flex items-center gap-4 cursor-pointer">
-        <CartBtn />
+        <CartBtn user={session?.user?.email || ""} />
         <UserButton user={session?.user!} expires={session?.expires!} />
       </div>
     </div>

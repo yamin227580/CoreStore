@@ -20,6 +20,7 @@ export type CartType = {
   setCartPosition: (position: "Order" | "Checkout" | "Success") => void;
   clearCart: () => void;
 };
+
 export const useCartStore = create(
   persist<CartType>(
     (set) => ({
