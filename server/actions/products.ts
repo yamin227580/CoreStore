@@ -26,6 +26,7 @@ export const updateProduct = actionClient
           .where(eq(products.id, id));
 
         revalidatePath("/dashboard/products");
+        revalidatePath("/");
         return { success: `${title} updated successfully` };
       } else {
         //create product
@@ -35,6 +36,7 @@ export const updateProduct = actionClient
           .returning();
 
         revalidatePath("/dashboard/products");
+        revalidatePath("/");
         return { success: `${product[0].title} created successfully` };
       }
     } catch (error) {
