@@ -4,12 +4,20 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**",
-        port: "",
-        pathname: "**",
+        hostname: "uploadthing.com",
       },
     ],
   },
+  // images: {
+  //   remotePatterns: [
+  //     {
+  //       protocol: "https",
+  //       hostname: "**",
+  //       port: "",
+  //       pathname: "**",
+  //     },
+  //   ],
+  // },
 };
 
 export default nextConfig;
