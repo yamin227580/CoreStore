@@ -1,4 +1,3 @@
-import { VariantsWithProduct } from "@/lib/infer-types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -20,21 +19,12 @@ export type CartType = {
   cartPosition: "Order" | "Checkout" | "Success";
   setCartPosition: (position: "Order" | "Checkout" | "Success") => void;
   clearCart: () => void;
-  products: VariantsWithProduct[];
-  setProducts: (productsWithV: VariantsWithProduct[]) => void;
-  imageCount: number;
-  setImageCount: (val: number) => void;
 };
 
 export const useCartStore = create(
   persist<CartType>(
     (set) => ({
       cart: [],
-      imageCount: 0,
-      setImageCount: (val) => set((state) => ({ imageCount: val })),
-      products: [],
-      setProducts: (productsWithV) =>
-        set((state) => ({ products: productsWithV })),
       clearCart: () => set((state) => ({ cart: [] })),
       cartPosition: "Order",
       setCartPosition: (position) =>

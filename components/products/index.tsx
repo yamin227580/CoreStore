@@ -1,43 +1,27 @@
 "use client";
 import formatCurrency from "@/lib/formatCurrency";
 import { VariantsWithProduct } from "@/lib/infer-types";
-import { useCartStore } from "@/store/cart-store";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type ProductProps = {
   productWithVariants: VariantsWithProduct[];
 };
 const Products = ({ productWithVariants }: ProductProps) => {
-  const setProducts = useCartStore((state) => state.setProducts);
-  const setImageCount = useCartStore((state) => state.setImageCount);
-  const imageCount = useCartStore((state) => state.imageCount);
-  const proudcts = useCartStore((state) => state.products);
-
   const params = useSearchParams();
   const tagParams = params.get("tag") || "iphone";
   const [filterProducts, setFilterProducts] = useState<VariantsWithProduct[]>(
     []
   );
-  const router = useRouter();
-  useEffect(() => {
-    const filterItems = proudcts.filter(
-      (item) => item.variantTags[0].tag.toLowerCase() === tagParams
-    );
-    console.log("imageCount", imageCount);
-    if (imageCount === proudcts.length) {
-      setFilterProducts(filterItems);
-    } else {
-      router.push("/");
-    }
-  }, [tagParams, proudcts]);
 
   useEffect(() => {
-    setImageCount(productWithVariants.length);
-    setProducts(productWithVariants);
-  }, [productWithVariants]);
+    const filterItems = productWithVariants.filter(
+      (item) => item.variantTags[0].tag.toLowerCase() === tagParams
+    );
+    setFilterProducts(filterItems);
+  }, [tagParams]);
 
   if (!filterProducts) return;
   return (
