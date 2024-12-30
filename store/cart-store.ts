@@ -22,12 +22,16 @@ export type CartType = {
   clearCart: () => void;
   products: VariantsWithProduct[];
   setProducts: (productsWithV: VariantsWithProduct[]) => void;
+  imageCount: number;
+  setImageCount: (val: number) => void;
 };
 
 export const useCartStore = create(
   persist<CartType>(
     (set) => ({
       cart: [],
+      imageCount: 0,
+      setImageCount: (val) => set((state) => ({ imageCount: val })),
       products: [],
       setProducts: (productsWithV) =>
         set((state) => ({ products: productsWithV })),
