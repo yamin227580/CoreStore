@@ -10,9 +10,6 @@ const nextConfig = {
       },
     ],
   },
-  env: {
-    DRIZZLE_DATABASE_URL: process.env.DRIZZLE_DATABASE_URL,
-  },
 };
 
 export default nextConfig;

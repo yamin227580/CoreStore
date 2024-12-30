@@ -73,7 +73,7 @@ const PaymentForm = ({ totalPrice }: PayemntFormProps) => {
         clientSecret: response.data.success.clientSecretId!,
         redirect: "if_required",
         confirmParams: {
-          return_url: "http://localhost:3000/success",
+          return_url: "https://icore-five.vercel.app/success",
           receipt_email: response.data.success.user_email!,
         },
       });
