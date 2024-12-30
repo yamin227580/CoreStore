@@ -1,6 +1,7 @@
 "use client";
 import formatCurrency from "@/lib/formatCurrency";
 import { VariantsWithProduct } from "@/lib/infer-types";
+import { useCartStore } from "@/store/cart-store";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -10,19 +11,23 @@ type ProductProps = {
   productWithVariants: VariantsWithProduct[];
 };
 const Products = ({ productWithVariants }: ProductProps) => {
+  const setProducts = useCartStore((state) => state.setProducts);
+  setProducts(productWithVariants);
+  const proudcts = useCartStore((state) => state.products);
   const params = useSearchParams();
   const tagParams = params.get("tag") || "iphone";
   const [filterProducts, setFilterProducts] = useState<VariantsWithProduct[]>(
     []
   );
   useEffect(() => {
-    const filterItems = productWithVariants.filter(
+    const filterItems = proudcts.filter(
       (item) => item.variantTags[0].tag.toLowerCase() === tagParams
     );
     setFilterProducts(filterItems);
-  }, [tagParams]);
+    console.log("all products", filterItems);
+  }, [tagParams, proudcts]);
 
-  console.log("data", filterProducts);
+  if (!filterProducts) return;
   return (
     <main className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {filterProducts.map((p) => {
