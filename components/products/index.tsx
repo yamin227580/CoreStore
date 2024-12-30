@@ -24,8 +24,9 @@ const Products = ({ productWithVariants }: ProductProps) => {
       (item) => item.variantTags[0].tag.toLowerCase() === tagParams
     );
     setFilterProducts(filterItems);
-    console.log("all products", filterItems);
+    console.log("filter products", filterItems);
   }, [tagParams, proudcts]);
+  console.log("all products", proudcts);
 
   if (!filterProducts) return;
   return (
